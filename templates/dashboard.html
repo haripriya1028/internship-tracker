@@ -14,11 +14,16 @@
             <li>
                 <strong>{{ app.company }}</strong> — {{ app.role }}
                 ({{ app.status }})
+                |
+                <a href="/edit/{{ app.id }}">Edit</a>
+                |
+                <a href="/delete/{{ app.id }}">Delete</a>
             </li>
         {% else %}
             <li>No applications added yet.</li>
         {% endfor %}
     </ul>
+    
 
     <br>
     <a href="/logout">Logout</a>
