@@ -42,7 +42,26 @@ def create_app():
     @login_required
     def dashboard():
         apps = Application.query.filter_by(user_id=current_user.id).all()
-        return render_template("dashboard.html", applications=apps)
+
+        # Count applications by status
+        stats = {
+            "Applied": 0,
+            "OA": 0,
+            "Interview": 0,
+            "Offer": 0,
+            "Rejected": 0
+        }
+
+        for app in apps:
+            if app.status in stats:
+                stats[app.status] += 1
+
+        return render_template(
+            "dashboard.html",
+            applications=apps,
+            stats=stats
+        )
+
 
 
     

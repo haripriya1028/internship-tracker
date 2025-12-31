@@ -9,21 +9,40 @@
     <a href="/add">Add New Application</a>
     <br><br>
 
+    <!-- Application Stats -->
+    <h3>Application Stats</h3>
+    <ul>
+        {% for key, value in stats.items() %}
+            <li>{{ key }}: {{ value }}</li>
+        {% endfor %}
+    </ul>
+    <hr>
+
+    <!-- Applications List -->
     <ul>
         {% for app in applications %}
             <li>
                 <strong>{{ app.company }}</strong> — {{ app.role }}
-                ({{ app.status }})
-                |
-                <a href="/edit/{{ app.id }}">Edit</a>
-                |
-                <a href="/delete/{{ app.id }}">Delete</a>
+
+                {% if app.status == "Applied" %}
+                    <span style="color: blue;">{{ app.status }}</span>
+                {% elif app.status == "OA" %}
+                    <span style="color: orange;">{{ app.status }}</span>
+                {% elif app.status == "Interview" %}
+                    <span style="color: purple;">{{ app.status }}</span>
+                {% elif app.status == "Offer" %}
+                    <span style="color: green;">{{ app.status }}</span>
+                {% elif app.status == "Rejected" %}
+                    <span style="color: red;">{{ app.status }}</span>
+                {% endif %}
+
+                | <a href="/edit/{{ app.id }}">Edit</a>
+                | <a href="/delete/{{ app.id }}">Delete</a>
             </li>
         {% else %}
             <li>No applications added yet.</li>
         {% endfor %}
     </ul>
-    
 
     <br>
     <a href="/logout">Logout</a>
