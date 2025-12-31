@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Your Internship Applications</h2>
+
+    <a href="/add">Add New Application</a>
+    <br><br>
+
+    <ul>
+        {% for app in applications %}
+            <li>
+                <strong>{{ app.company }}</strong> — {{ app.role }}
+                ({{ app.status }})
+            </li>
+        {% else %}
+            <li>No applications added yet.</li>
+        {% endfor %}
+    </ul>
+
+    <br>
+    <a href="/logout">Logout</a>
+</body>
+</html>
