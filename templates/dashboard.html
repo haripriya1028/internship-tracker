@@ -1,50 +1,81 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
     <title>Dashboard</title>
 </head>
 <body>
-    <h2>Your Internship Applications</h2>
+    <h2>Your Applications</h2>
 
-    <a href="/add">Add New Application</a>
+    <a href="/add">➕ Add New Application</a>
     <br><br>
+    <form method="GET" style="margin-bottom: 20px;">
+        <input
+            type="text"
+            name="search"
+            placeholder="Search by company"
+            value="{{ search }}"
+            style="padding: 8px; width: 200px;"
+        >
+    
+        <select name="status" style="padding: 8px;">
+            <option value="">All Status</option>
+            {% for s in ["Applied", "OA", "Interview", "Offer", "Rejected"] %}
+                <option value="{{ s }}" {% if status_filter == s %}selected{% endif %}>
+                    {{ s }}
+                </option>
+            {% endfor %}
+        </select>
+    
+        <button type="submit" style="padding: 8px;">Filter</button>
+    </form>
+    
 
-    <!-- Application Stats -->
+    <!-- Stats -->
     <h3>Application Stats</h3>
-    <ul>
+    <div class="stats">
         {% for key, value in stats.items() %}
-            <li>{{ key }}: {{ value }}</li>
+            <div class="stat-box">
+                {{ key }}: {{ value }}
+            </div>
         {% endfor %}
-    </ul>
-    <hr>
+    </div>
 
-    <!-- Applications List -->
-    <ul>
-        {% for app in applications %}
-            <li>
-                <strong>{{ app.company }}</strong> — {{ app.role }}
+    <!-- Applications -->
+    {% for app in applications %}
+        <div class="card">
+            <strong>{{ app.company }}</strong> — {{ app.role }}
 
-                {% if app.status == "Applied" %}
-                    <span style="color: blue;">{{ app.status }}</span>
-                {% elif app.status == "OA" %}
-                    <span style="color: orange;">{{ app.status }}</span>
-                {% elif app.status == "Interview" %}
-                    <span style="color: purple;">{{ app.status }}</span>
-                {% elif app.status == "Offer" %}
-                    <span style="color: green;">{{ app.status }}</span>
-                {% elif app.status == "Rejected" %}
-                    <span style="color: red;">{{ app.status }}</span>
-                {% endif %}
+            {% if app.status == "Applied" %}
+                <span class="badge applied">Applied</span>
+            {% elif app.status == "OA" %}
+                <span class="badge oa">OA</span>
+            {% elif app.status == "Interview" %}
+                <span class="badge interview">Interview</span>
+            {% elif app.status == "Offer" %}
+                <span class="badge offer">Offer</span>
+            {% elif app.status == "Rejected" %}
+                <span class="badge rejected">Rejected</span>
+            {% endif %}
 
-                | <a href="/edit/{{ app.id }}">Edit</a>
-                | <a href="/delete/{{ app.id }}">Delete</a>
-            </li>
-        {% else %}
-            <li>No applications added yet.</li>
-        {% endfor %}
-    </ul>
+            <div class="actions">
+                <a href="/edit/{{ app.id }}">Edit</a>
+                <a href="/delete/{{ app.id }}">Delete</a>
+            </div>
+            {% if app.notes %}
+                <div style="margin-left: 20px; color: #555; font-size: 0.9em;">
+                    <strong>Notes:</strong> {{ app.notes }}
+                </div>
+            {% endif %}
+
+        </div>
+    {% else %}
+        <p>No applications added yet.</p>
+    {% endfor %}
 
     <br>
     <a href="/logout">Logout</a>
 </body>
+
 </html>

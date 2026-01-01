@@ -1,28 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Application</title>
+    <title>Add Internship</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-    <h2>Add Internship Application</h2>
+<body class="auth-body">
 
-    <form method="POST">
-        <input type="text" name="company" placeholder="Company" required><br><br>
-        <input type="text" name="role" placeholder="Role" required><br><br>
+    <div class="auth-card">
+        <h2>Add Internship</h2>
 
-        <select name="status" required>
-            <option value="Applied">Applied</option>
-            <option value="OA">OA</option>
-            <option value="Interview">Interview</option>
-            <option value="Rejected">Rejected</option>
-            <option value="Offer">Offer</option>
-        </select><br><br>
+        <form method="POST">
+            <label>Company</label>
+            <input type="text" name="company" required>
 
-        <textarea name="notes" placeholder="Notes"></textarea><br><br>
+            <label>Role</label>
+            <input type="text" name="role" required>
 
-        <button type="submit">Save</button>
-    </form>
+            <label>Status</label>
+            <select name="status" required>
+                <option value="" disabled selected>Select Status</option>
+                <option value="Applied">Applied</option>
+                <option value="OA">OA</option>
+                <option value="Interview">Interview</option>
+                <option value="Offer">Offer</option>
+                <option value="Rejected">Rejected</option>
+            </select>
 
-    <p><a href="/dashboard">Back to Dashboard</a></p>
+            
+
+            <button type="submit">Add Application</button>
+        </form>
+
+        <p class="auth-link">
+            <a href="/dashboard">⬅ Back to Dashboard</a>
+        </p>
+    </div>
+
 </body>
 </html>

@@ -2,27 +2,38 @@
 <html>
 <head>
     <title>Edit Application</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+
+<div class="container">
     <h2>Edit Internship Application</h2>
 
     <form method="POST">
-        <input type="text" name="company" value="{{ app.company }}" required><br><br>
-        <input type="text" name="role" value="{{ app.role }}" required><br><br>
+        <label>Company Name</label>
+        <input type="text" name="company" value="{{ application.company }}" required>
 
-        <select name="status">
-            <option value="Applied" {% if app.status=="Applied" %}selected{% endif %}>Applied</option>
-            <option value="OA" {% if app.status=="OA" %}selected{% endif %}>OA</option>
-            <option value="Interview" {% if app.status=="Interview" %}selected{% endif %}>Interview</option>
-            <option value="Rejected" {% if app.status=="Rejected" %}selected{% endif %}>Rejected</option>
-            <option value="Offer" {% if app.status=="Offer" %}selected{% endif %}>Offer</option>
-        </select><br><br>
+        <label>Role</label>
+        <input type="text" name="role" value="{{ application.role }}" required>
 
-        <textarea name="notes">{{ app.notes }}</textarea><br><br>
+        <label>Status</label>
+        <select name="status" required>
+            <option disabled>Select status</option>
+            {% for s in ["Applied", "OA", "Interview", "Offer", "Rejected"] %}
+                <option value="{{ s }}" {% if application.status == s %}selected{% endif %}>
+                    {{ s }}
+                </option>
+            {% endfor %}
+        </select>
 
-        <button type="submit">Update</button>
+        <label>Notes</label>
+        <textarea name="notes" rows="4">{{ application.notes }}</textarea>
+
+        <button type="submit">Update Application</button>
     </form>
 
-    <p><a href="/dashboard">Back</a></p>
+    <a class="back-link" href="{{ url_for('dashboard') }}">← Back to Dashboard</a>
+</div>
+
 </body>
 </html>

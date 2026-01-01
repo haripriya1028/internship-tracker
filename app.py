@@ -3,7 +3,7 @@ from extensions import db, login_manager
 from flask_login import login_required, current_user
 from models.application import Application
 from flask import render_template
-
+from flask import request
 
 from config import Config
 
@@ -36,14 +36,23 @@ def create_app():
     def home():
         return "Internship Tracker is running!"
 
-    
 
     @app.route("/dashboard")
     @login_required
     def dashboard():
-        apps = Application.query.filter_by(user_id=current_user.id).all()
+        search = request.args.get("search", "")
+        status_filter = request.args.get("status", "")
 
-        # Count applications by status
+        query = Application.query.filter_by(user_id=current_user.id)
+
+        if search:
+            query = query.filter(Application.company.ilike(f"%{search}%"))
+
+        if status_filter:
+            query = query.filter_by(status=status_filter)
+
+        apps = query.all()
+
         stats = {
             "Applied": 0,
             "OA": 0,
@@ -59,8 +68,11 @@ def create_app():
         return render_template(
             "dashboard.html",
             applications=apps,
-            stats=stats
+            stats=stats,
+            search=search,
+            status_filter=status_filter
         )
+
 
 
 

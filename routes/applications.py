@@ -14,7 +14,7 @@ def add_application():
             company=request.form["company"],
             role=request.form["role"],
             status=request.form["status"],
-            notes=request.form["notes"],
+            notes = request.form.get("notes", ""),
             applied_date=date.today(),
             user_id=current_user.id
         )
@@ -42,7 +42,8 @@ def edit_application(id):
         db.session.commit()
         return redirect(url_for("dashboard"))
 
-    return render_template("edit_application.html", app=app)
+    return render_template("edit_application.html", application=app)
+
 
 
 @applications.route("/delete/<int:id>")
