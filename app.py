@@ -42,6 +42,7 @@ def create_app():
     def dashboard():
         search = request.args.get("search", "")
         status_filter = request.args.get("status", "")
+        sort = request.args.get("sort", "newest")  # 👈 NEW
 
         query = Application.query.filter_by(user_id=current_user.id)
 
@@ -50,6 +51,12 @@ def create_app():
 
         if status_filter:
             query = query.filter_by(status=status_filter)
+
+        # 🔥 SORT LOGIC
+        if sort == "oldest":
+            query = query.order_by(Application.applied_date.asc())
+        else:
+            query = query.order_by(Application.applied_date.desc())
 
         apps = query.all()
 
@@ -70,8 +77,10 @@ def create_app():
             applications=apps,
             stats=stats,
             search=search,
-            status_filter=status_filter
+            status_filter=status_filter,
+            sort=sort   # 👈 PASS TO TEMPLATE
         )
+
 
 
 
